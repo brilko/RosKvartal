@@ -1,0 +1,15 @@
+{
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "ExaminationsUriConfigParams": {
+    "ExaminationsUri": "https://dom.gosuslugi.ru/inspection/api/rest/services/examinations/public/search?$page=$pageNumberParameterName$&itemsPerPage=$pageSizeParameterName$",
+    "ExaminationsUriParameterPageNumber": "$pageNumberParameterName$",
+    "ExaminationsUriParametersPageSize": "$pageSizeParameterName$"
+  }
+}
