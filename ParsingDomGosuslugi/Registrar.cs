@@ -1,33 +1,59 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ParsingDomGosuslugi.Requests.ConfigurationParameters;
 using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
 using ParsingDomGosuslugi.Requests.Implementations;
+using System.Runtime.CompilerServices;
 
 namespace ParsingDomGosuslugi
 {
-    internal class Registrar
+    internal static class Registrar
     {
-        public ServiceProvider Register() 
+        private static readonly IConfigurationRoot configuration = ConfigurationExtension.BuildConfiguration();
+        public static ServiceProvider Register() 
         {
-            //var config = new ConfigurationBuilder()
-            //        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            //        .AddJsonFile(@"./appsettings.json")
-            //        .Build();
+            var services = CreateServices();
+            var provider = services.BuildServiceProvider();
+            return provider;
+        }
 
-            //var section = config.GetSection("ExaminationsUriConfigParams");
-            //var examinationsUriParams = section.Get<ExaminationsUriConfigParams>() ??
-            //    throw new Exception();
+        private static IServiceCollection CreateServices() 
+        {
+            return new ServiceCollection()
+                .AddBuildInServices()
+                .AddParametersFromConfiguration()
+                .AddCustomServices();
+        }
 
-            var services = new ServiceCollection()
-                .AddHttpClient()
-                .AddScoped(_ => new ExaminationsUriConfigParams())
+        private static IServiceCollection AddBuildInServices(this IServiceCollection services) 
+        {
+            return services
+                .AddHttpClient();
+        }
+
+        private static IServiceCollection AddParametersFromConfiguration(
+            this IServiceCollection services) 
+        {
+            return services
+                .AddParameter<ExaminationsUriConfigParams>("ExaminationsUriConfigParams")
+                .AddParameter<PeriodToLoad>("PeriodToLoad")
+                .AddParameter<BatchSizeParameter>("BatchSize");
+        }
+
+        private static IServiceCollection AddParameter<T>(this IServiceCollection services, 
+            string sectionKey) where T : class
+        {
+            var parsedObject = configuration.GetFromSection<T>(sectionKey);
+            return services.AddScoped(_ => parsedObject);
+        }
+
+        private static IServiceCollection AddCustomServices(this IServiceCollection services) 
+        {
+            return services
                 .AddScoped<IExaminationsRequestCreator, ExaminationsRequestCreator>()
                 .AddScoped<IExaminationsRequestHandler, ExaminationsRequestHandler>()
                 .AddScoped<IExaminationsUploader, ExaminationsUploader>()
                 .AddScoped<IExaminationsUri, ExaminationsUri>();
-
-            var provider = services.BuildServiceProvider();
-            return provider;
         }
     }
 }

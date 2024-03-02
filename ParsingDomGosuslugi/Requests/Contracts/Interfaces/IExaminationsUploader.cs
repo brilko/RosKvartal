@@ -2,6 +2,6 @@
 {
     internal interface IExaminationsUploader
     {
-        Task<string> UploadAsync(DateTime startPeriod);
+        Task<string> UploadAsync();
     }
 }

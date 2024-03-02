@@ -3,6 +3,6 @@
     internal class ExaminationsResponseModel
     {
         public long Total { get; set; }
-        public List<CheckingDocumentModel> Items { get; set; } = new();
+        public List<ExaminationModel> Items { get; set; } = new();
     }
 }

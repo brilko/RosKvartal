@@ -14,11 +14,13 @@ namespace ParsingDomGosuslugi.Requests.Implementations
             this.clientFactory = clientFactory;
         }
 
-        public async Task<ExaminationsResponseModel> HandleRequest(HttpRequestMessage request)
+        public async Task<ExaminationsResponseModel?> HandleRequest(HttpRequestMessage request)
         {
             HttpClient client = clientFactory.CreateClient();
             HttpResponseMessage responseMessage = await client.SendAsync(request);
-            responseMessage.EnsureSuccessStatusCode();
+            Console.WriteLine((int)responseMessage.StatusCode);
+            if(!responseMessage.IsSuccessStatusCode)
+                return null;
             var response = await responseMessage
                 .Content
                 .ReadFromJsonAsync<ExaminationsResponseModel>()

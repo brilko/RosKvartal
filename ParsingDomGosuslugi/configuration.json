@@ -8,8 +8,16 @@
     "**/platforms"
   ],
   "ExaminationsUriConfigParams": {
-    "ExaminationsUri": "https://dom.gosuslugi.ru/inspection/api/rest/services/examinations/public/search?$page=$pageNumberParameterName$&itemsPerPage=$pageSizeParameterName$",
+    "ExaminationsUri": "https://dom.gosuslugi.ru/inspection/api/rest/services/examinations/public/search?page=$pageNumberParameterName$&itemsPerPage=$pageSizeParameterName$",
     "ExaminationsUriParameterPageNumber": "$pageNumberParameterName$",
     "ExaminationsUriParametersPageSize": "$pageSizeParameterName$"
+  },
+  "PeriodToLoad": {
+    "Years": 0,
+    "Month": 1,
+    "Days": 0
+  },
+  "BatchSize": {
+    "Size": 1000
   }
 }
