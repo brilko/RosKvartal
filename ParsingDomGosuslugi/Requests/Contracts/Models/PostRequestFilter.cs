@@ -1,4 +1,4 @@
-﻿namespace ParsingDomGosuslugi.Requests.Contracts
+﻿namespace ParsingDomGosuslugi.Requests.Contracts.Models
 {
     internal class PostRequestFilter
     {

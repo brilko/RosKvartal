@@ -1,6 +1,8 @@
 ﻿using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
+using ParsingDomGosuslugi.Requests.Contracts.Models;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace ParsingDomGosuslugi.Requests.Implementations
 {
@@ -12,13 +14,16 @@ namespace ParsingDomGosuslugi.Requests.Implementations
             this.clientFactory = clientFactory;
         }
 
-        public async Task<string> HandleRequest(HttpRequestMessage request)
+        public async Task<ExaminationsResponseModel> HandleRequest(HttpRequestMessage request)
         {
             HttpClient client = clientFactory.CreateClient();
-            HttpResponseMessage response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            string responseBody = await response.Content.ReadAsStringAsync();
-            return responseBody;
+            HttpResponseMessage responseMessage = await client.SendAsync(request);
+            responseMessage.EnsureSuccessStatusCode();
+            var response = await responseMessage
+                .Content
+                .ReadFromJsonAsync<ExaminationsResponseModel>()
+                ?? throw new Exception();
+            return response;
         }
     }
 }

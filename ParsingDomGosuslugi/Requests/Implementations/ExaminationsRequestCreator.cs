@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using ParsingDomGosuslugi.Requests.Contracts;
 using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
+using ParsingDomGosuslugi.Requests.Contracts.Models;
 
 namespace ParsingDomGosuslugi.Requests.Implementations
 {

@@ -21,9 +21,9 @@ namespace ParsingDomGosuslugi.Requests.Implementations
         public async Task<string> UploadAsync(DateTime startPeriod)
         {
             var request = requestCreator.CreateBaseRequest(startPeriod);
-            request.RequestUri = examinationsUri.BuildUri(1, 10);
+            request.RequestUri = examinationsUri.BuildUri(1, 1);
             var response = await requestHandler.HandleRequest(request);
-            return response;
+            return "";
         }
     }
 }

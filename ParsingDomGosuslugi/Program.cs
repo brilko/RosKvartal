@@ -47,3 +47,4 @@ var uploader = provider.GetService<IExaminationsUploader>() ?? throw new Excepti
 var startPeriod = DateTime.Today.AddMonths(-1).ToUniversalTime();
 var message = await uploader.UploadAsync(startPeriod);
 Console.WriteLine(message);
+
