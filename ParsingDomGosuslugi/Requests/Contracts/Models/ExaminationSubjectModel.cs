@@ -7,11 +7,11 @@
 
     internal class OrganizationInfoEnriched
     {
-        public RegistryOrganizationCommonDetailWithNsi RegistryOrganizationCommonDetailWithNsi 
-            { get; set; } = new();
+        public RegistryOrganizationCommonDetailWithNsi RegistryOrganizationCommonDetailWithNsi
+        { get; set; } = new();
     }
 
-    internal class RegistryOrganizationCommonDetailWithNsi 
+    internal class RegistryOrganizationCommonDetailWithNsi
     {
         public string FullName { get; set; } = "";
         public string Ogrn { get; set; } = "";

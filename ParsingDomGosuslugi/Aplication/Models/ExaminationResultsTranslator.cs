@@ -2,7 +2,7 @@
 {
     internal class ExaminationResultsTranslator
     {
-        public static string BoolToRusSentense(bool? examinationResult) 
+        public static string BoolToRusSentense(bool? examinationResult)
         {
             if (!examinationResult.HasValue)
                 return "-";

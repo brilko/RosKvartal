@@ -2,8 +2,8 @@
 {
     internal class ExaminationCompletionStatusTranslator
     {
-        public readonly static IReadOnlyDictionary<string, string> EngToRus = 
-            new Dictionary<string, string>() 
+        public readonly static IReadOnlyDictionary<string, string> EngToRus =
+            new Dictionary<string, string>()
         {
             { "INFO",  "Назначена"},
             { "ACTIVITY", "Назначена" },

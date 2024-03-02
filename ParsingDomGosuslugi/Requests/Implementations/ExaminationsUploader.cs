@@ -4,7 +4,7 @@ using ParsingDomGosuslugi.Requests.Contracts.Models;
 
 namespace ParsingDomGosuslugi.Requests.Implementations
 {
-    internal class ExaminationsUploader: IExaminationsUploader
+    internal class ExaminationsUploader : IExaminationsUploader
     {
         private readonly IExaminationsUri examinationsUri;
         private readonly IExaminationsRequestCreator requestCreator;
@@ -13,8 +13,8 @@ namespace ParsingDomGosuslugi.Requests.Implementations
         private readonly int batchSize;
 
         public ExaminationsUploader(
-            IExaminationsUri examinationsUri, 
-            IExaminationsRequestCreator requestCreator, 
+            IExaminationsUri examinationsUri,
+            IExaminationsRequestCreator requestCreator,
             IExaminationsRequestHandler requestHandler,
             PeriodToLoad periodToLoad,
             BatchSizeParameter batchSizeParameter)
@@ -35,7 +35,7 @@ namespace ParsingDomGosuslugi.Requests.Implementations
         }
 
 
-        private ExaminationsResponseModel CreateTestModels() 
+        private ExaminationsResponseModel CreateTestModels()
         {
             var responseTest = new ExaminationsResponseModel();
             var testString = "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq";

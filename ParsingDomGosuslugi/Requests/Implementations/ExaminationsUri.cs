@@ -3,7 +3,7 @@ using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
 
 namespace ParsingDomGosuslugi.Requests.Implementations
 {
-    internal class ExaminationsUri: IExaminationsUri
+    internal class ExaminationsUri : IExaminationsUri
     {
         private readonly string pageNumberParameterName;
         private readonly string pageSizeParameterName;

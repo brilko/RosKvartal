@@ -1,11 +1,11 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
+﻿using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
 using ParsingDomGosuslugi.Requests.Contracts.Models;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace ParsingDomGosuslugi.Requests.Implementations
 {
-    internal class ExaminationsRequestCreator: IExaminationsRequestCreator
+    internal class ExaminationsRequestCreator : IExaminationsRequestCreator
     {
         public HttpRequestMessage CreateBaseRequest(DateTime startPeriod)
         {
