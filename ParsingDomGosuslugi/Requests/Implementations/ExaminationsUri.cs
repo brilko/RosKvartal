@@ -1,4 +1,4 @@
-﻿using ParsingDomGosuslugi.Requests.ConfigurationParameters;
+﻿using ParsingDomGosuslugi.ConfigurationParameters;
 using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
 
 namespace ParsingDomGosuslugi.Requests.Implementations
