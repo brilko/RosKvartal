@@ -1,4 +1,4 @@
-﻿namespace ParsingDomGosuslugi.Aplication.Models
+﻿namespace ParsingDomGosuslugi.MapperProfiles
 {
     internal class ExaminationResultsTranslator
     {

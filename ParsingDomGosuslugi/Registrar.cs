@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ParsingDomGosuslugi.Requests.ConfigurationParameters;
+using ParsingDomGosuslugi.ConfigurationParameters;
+using ParsingDomGosuslugi.MapperProfiles;
 using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
 using ParsingDomGosuslugi.Requests.Implementations;
 
@@ -20,6 +22,7 @@ namespace ParsingDomGosuslugi
         {
             return new ServiceCollection()
                 .AddBuildInServices()
+                .AddMappers()
                 .AddParametersFromConfiguration()
                 .AddCustomServices();
         }
@@ -29,6 +32,19 @@ namespace ParsingDomGosuslugi
             return services
                 .AddHttpClient();
         }
+
+        private static IServiceCollection AddMappers(this IServiceCollection services)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ExaminationProfile>();
+            });
+            configuration.AssertConfigurationIsValid();
+
+            return services
+                .AddSingleton<IMapper>(new Mapper(configuration));
+        }
+
 
         private static IServiceCollection AddParametersFromConfiguration(
             this IServiceCollection services)
