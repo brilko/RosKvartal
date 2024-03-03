@@ -38,6 +38,7 @@ namespace ParsingDomGosuslugi
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<ExaminationProfile>();
+                cfg.AddProfile<ExaminationResponseProfile>();
             });
             configuration.AssertConfigurationIsValid();
 

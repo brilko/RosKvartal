@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
 using ParsingDomGosuslugi.Requests.Contracts.Models;
 using System.Net.Http.Json;
@@ -9,12 +10,15 @@ namespace ParsingDomGosuslugi.Requests.Implementations
     {
         private readonly IHttpClientFactory clientFactory;
         private readonly ILogger<ExaminationsRequestHandler> logger;
+        private readonly IMapper mapper;
         public ExaminationsRequestHandler(
-            IHttpClientFactory clientFactory, 
-            ILogger<ExaminationsRequestHandler> logger)
+            IHttpClientFactory clientFactory,
+            ILogger<ExaminationsRequestHandler> logger,
+            IMapper mapper)
         {
             this.clientFactory = clientFactory;
             this.logger = logger;
+            this.mapper = mapper;
         }
 
         public async Task<ExaminationsResponseModel?> HandleRequest(HttpRequestMessage request)
@@ -28,7 +32,7 @@ namespace ParsingDomGosuslugi.Requests.Implementations
                 .Content
                 .ReadFromJsonAsync<ExaminationsResponseModel>()
                 ?? throw new Exception();
-            var responseDto = 
+            var responseDto = mapper.Map
             return response;
         }
     }
