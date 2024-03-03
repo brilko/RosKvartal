@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using ParsingDomGosuslugi.Requests.Contracts.Models;
+using DataTransferObjects;
+using RequestsContracts.Models;
 
 namespace ParsingDomGosuslugi.MapperProfiles
 {
-    internal class ExaminationResponseProfile: Profile
+    public class ExaminationResponseProfile: Profile
     {
         public ExaminationResponseProfile() 
         {

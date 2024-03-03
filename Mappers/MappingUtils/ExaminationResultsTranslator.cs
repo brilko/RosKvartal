@@ -1,4 +1,4 @@
-﻿namespace ParsingDomGosuslugi.MapperProfiles
+﻿namespace Mappers.MappingUtils
 {
     internal class ExaminationResultsTranslator
     {

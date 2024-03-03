@@ -1,6 +1,6 @@
-﻿namespace ParsingDomGosuslugi.ConfigurationParameters
+﻿namespace ConfigurationParameters
 {
-    internal class PeriodToLoad
+    public class PeriodToLoad
     {
         public int Years { get; set; }
         public int Month { get; set; }

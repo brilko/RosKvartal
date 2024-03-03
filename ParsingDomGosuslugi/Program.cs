@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ParsingDomGosuslugi;
-using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
+using RequestsContracts.Interfaces;
 
 var provider = Registrar.Register();
 var uploader = provider.GetService<IExaminationsUploader>() ?? throw new Exception();

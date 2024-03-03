@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using ConfigurationParameters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ParsingDomGosuslugi.ConfigurationParameters;
 using ParsingDomGosuslugi.MapperProfiles;
-using ParsingDomGosuslugi.Requests.Contracts.Interfaces;
-using ParsingDomGosuslugi.Requests.Implementations;
+using RequestsContracts.Interfaces;
+using RequestsImplementations;
 
 namespace ParsingDomGosuslugi
 {
