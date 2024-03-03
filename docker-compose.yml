@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  examinations-database:
+    image:  mcr.microsoft.com/mssql/server:2019-latest
+    ports: 
+      - 5434:1433
+    volumes:
+      - "examinations-databse-volume:/databases/examinations-databse-volume"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "adminadminUppercaselowercasw0123456789$*%^@!"
+      MSSQL_PID: "Express"
+    container_name: "examinations-database"
+
+volumes:
+  examinations-databse-volume:

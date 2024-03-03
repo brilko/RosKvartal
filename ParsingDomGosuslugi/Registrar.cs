@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using ConfigurationParameters;
+using Mappers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ParsingDomGosuslugi.MapperProfiles;
+using RepositoryContracts.Intefaces;
+using RepositoryImplementations;
 using RequestsContracts.Interfaces;
 using RequestsImplementations;
 
@@ -10,20 +13,21 @@ namespace ParsingDomGosuslugi
 {
     internal static class Registrar
     {
-        private static readonly IConfigurationRoot configuration = ConfigurationExtension.BuildConfiguration();
         public static ServiceProvider Register()
         {
-            var services = CreateServices();
+            var configuration = ConfigurationExtension.BuildConfiguration();
+            var services = CreateServices(configuration);
             var provider = services.BuildServiceProvider();
             return provider;
         }
 
-        private static IServiceCollection CreateServices()
+        private static IServiceCollection CreateServices(IConfigurationRoot configuration)
         {
             return new ServiceCollection()
                 .AddBuildInServices()
                 .AddMappers()
-                .AddParametersFromConfiguration()
+                .AddDataBase(configuration)
+                .AddParametersFromConfiguration(configuration)
                 .AddCustomServices();
         }
 
@@ -46,19 +50,30 @@ namespace ParsingDomGosuslugi
                 .AddSingleton<IMapper>(new Mapper(configuration));
         }
 
+        private static IServiceCollection AddDataBase(this IServiceCollection services,
+            IConfigurationRoot configuration)
+        {
+            var connectionString = configuration.GetConnectionString("examinationsDatabaseConnectionString");
+            services
+                .AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(connectionString))
+                .AddScoped(typeof(IRepository<>), typeof(Repository<>))
+                .AddScoped<IExaminationRepository, ExaminationRepository>();
+            return services;
+        }
 
         private static IServiceCollection AddParametersFromConfiguration(
-            this IServiceCollection services)
+            this IServiceCollection services, IConfigurationRoot configuration)
         {
             return services
-                .AddParameter<ExaminationsUriConfigParams>("ExaminationsUriConfigParams")
-                .AddParameter<PeriodToLoad>("PeriodToLoad")
-                .AddParameter<BatchSizeParameter>("BatchSize");
+                .AddParameter<ExaminationsUriConfigParams>("ExaminationsUriConfigParams", configuration)
+                .AddParameter<PeriodToLoad>("PeriodToLoad", configuration)
+                .AddParameter<BatchSizeParameter>("BatchSize", configuration);
         }
 
         private static IServiceCollection AddParameter<T>(this IServiceCollection services,
-            string sectionKey) where T : class
+            string sectionKey, IConfigurationRoot configuration) where T : class
         {
+            
             var parsedObject = configuration.GetFromSection<T>(sectionKey);
             return services.AddScoped(_ => parsedObject);
         }

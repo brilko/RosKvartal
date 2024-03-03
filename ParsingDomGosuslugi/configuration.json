@@ -18,6 +18,9 @@
     "Days": 0
   },
   "BatchSize": {
-    "Size": 10
+    "Size": 1000
+  },
+  "ConnectionStrings": {
+    "examinationsDatabaseConnectionString": "Server=examinations-databse-volume;Database=Examinations;User id=sa;Password=adminadminUppercaselowercasw0123456789$*%^@!"
   }
 }

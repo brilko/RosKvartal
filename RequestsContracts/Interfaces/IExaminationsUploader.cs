@@ -1,7 +1,9 @@
-﻿namespace RequestsContracts.Interfaces
+﻿using RequestsContracts.Models;
+
+namespace RequestsContracts.Interfaces
 {
     public interface IExaminationsUploader
     {
-        Task<string> UploadAsync();
+        Task<ExaminationsResponseModel> UploadBatchAsync(int batchNumber);
     }
 }

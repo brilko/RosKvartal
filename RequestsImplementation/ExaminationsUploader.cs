@@ -1,7 +1,7 @@
 ﻿using ConfigurationParameters;
-using DataTransferObjects;
 using Microsoft.Extensions.Logging;
 using RequestsContracts.Interfaces;
+using RequestsContracts.Models;
 
 namespace RequestsImplementations
 {
@@ -30,24 +30,24 @@ namespace RequestsImplementations
             this.logger = logger;
         }
 
-        public async Task<string> UploadAsync()
-        {
-            var batchNumber = 0;
-            var response = new ExaminationResponseDto() 
-            {
-                Total = int.MaxValue
-            };
-            var examinations = new List<ExaminationDto>();
-            while (response.Total > batchNumber * batchSize) 
-            {
-                batchNumber++;
-                response = await UploadBatchAsync(batchNumber);
-                examinations = response.Items;
-            }
-            return "";
-        }
+        //public async Task<List<ExaminationDto>> UploadAsync()
+        //{
+        //    var batchNumber = 0;
+        //    var response = new ExaminationResponseDto() 
+        //    {
+        //        Total = int.MaxValue
+        //    };
+        //    var examinations = new List<ExaminationDto>();
+        //    while (response.Total > batchNumber * batchSize) 
+        //    {
+        //        batchNumber++;
+        //        response = await UploadBatchAsync(batchNumber);
+        //        examinations.AddRange(response.Items);
+        //    }
+        //    return examinations;
+        //}
 
-        private async Task<ExaminationResponseDto> UploadBatchAsync(int batchNumber) 
+        public async Task<ExaminationsResponseModel> UploadBatchAsync(int batchNumber) 
         {
             while (true) 
             {
@@ -56,7 +56,7 @@ namespace RequestsImplementations
                 var response = await requestHandler.HandleRequest(request);
                 if (response != null)
                     return response;
-                Console.WriteLine("Получить данные от сервера не удалось. Ещё одна попытка получить данные. ExaminationsUploader.");
+                logger.LogWarning("Получить данные от сервера не удалось. Ещё одна попытка получить данные. ExaminationsUploader.");
             }
         }
     }

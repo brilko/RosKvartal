@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
-using DataTransferObjects;
 using Mappers.MappingUtils;
 using RequestsContracts.Models;
+using ServicesContracts.DTOs;
 
-namespace ParsingDomGosuslugi.MapperProfiles
+namespace Mappers
 {
-    public class ExaminationProfile: Profile
+    public class ExaminationProfile : Profile
     {
-        public ExaminationProfile() 
+        public ExaminationProfile()
         {
             CreateMap<ExaminationModel, ExaminationDto>()
-                .ForMember(dest => dest.OrganizationFullName, opt => opt.MapFrom( 
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.Parse(src.Guid)))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Parse(src.Date)))
+                .ForMember(dest => dest.OrganizationFullName, opt => opt.MapFrom(
                     src => src
                         .Subject
                         .OrganizationInfoEnriched

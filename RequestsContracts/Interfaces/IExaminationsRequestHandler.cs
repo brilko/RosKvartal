@@ -1,9 +1,9 @@
-﻿using DataTransferObjects;
+﻿using RequestsContracts.Models;
 
 namespace RequestsContracts.Interfaces
 {
     public interface IExaminationsRequestHandler
     {
-        Task<ExaminationResponseDto?> HandleRequest(HttpRequestMessage request);
+        Task<ExaminationsResponseModel?> HandleRequest(HttpRequestMessage request);
     }
 }

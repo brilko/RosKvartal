@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConfigurationParameters\ConfigurationParameters.csproj" />
-    <ProjectReference Include="..\DataTransferObjects\DataTransferObjects.csproj" />
     <ProjectReference Include="..\RequestsContracts\RequestsContracts.csproj" />
   </ItemGroup>
 

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.16" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
@@ -19,8 +20,12 @@
   <ItemGroup>
     <ProjectReference Include="..\ConfigurationParameters\ConfigurationParameters.csproj" />
     <ProjectReference Include="..\Mappers\Mappers.csproj" />
+    <ProjectReference Include="..\RepositoryContracts\RepositoryContracts.csproj" />
+    <ProjectReference Include="..\RepositoryImplementations\RepositoryImplementations.csproj" />
     <ProjectReference Include="..\RequestsContracts\RequestsContracts.csproj" />
     <ProjectReference Include="..\RequestsImplementation\RequestsImplementation.csproj" />
+    <ProjectReference Include="..\ServicesContracts\ServicesContracts.csproj" />
+    <ProjectReference Include="..\ServicesImplementation\ServicesImplementation.csproj" />
   </ItemGroup>
 
 </Project>
