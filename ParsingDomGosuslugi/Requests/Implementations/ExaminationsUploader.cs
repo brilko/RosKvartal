@@ -33,7 +33,7 @@ namespace ParsingDomGosuslugi.Requests.Implementations
         public async Task<string> UploadAsync()
         {
             var batchNumber = 0;
-            var response = new ExaminationsResponseModel() 
+            var response = new ExaminationResponseDto() 
             {
                 Total = int.MaxValue
             };
@@ -42,14 +42,12 @@ namespace ParsingDomGosuslugi.Requests.Implementations
             {
                 batchNumber++;
                 response = await UploadBatchAsync(batchNumber);
-                var items = response.Items;
+                examinations = response.Items;
             }
-
-
             return "";
         }
 
-        private async Task<ExaminationsResponseModel> UploadBatchAsync(int batchNumber) 
+        private async Task<ExaminationResponseDto> UploadBatchAsync(int batchNumber) 
         {
             while (true) 
             {
@@ -60,33 +58,6 @@ namespace ParsingDomGosuslugi.Requests.Implementations
                     return response;
                 Console.WriteLine("Получить данные от сервера не удалось. Ещё одна попытка получить данные. ExaminationsUploader.");
             }
-        }
-
-        private ExaminationsResponseModel CreateTestModels()
-        {
-            var responseTest = new ExaminationsResponseModel();
-            var testString = "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq";
-            for (var indexer = 0; indexer < 1000; indexer++)
-            {
-                responseTest.Items.Add(new ExaminationModel()
-                {
-                    ExaminationCompletionStatus = testString,
-                    ExamObjective = testString,
-                    HasOffence = false,
-                    Subject = new ExaminationSubjectModel()
-                    {
-                        OrganizationInfoEnriched = new OrganizationInfoEnriched()
-                        {
-                            RegistryOrganizationCommonDetailWithNsi = new RegistryOrganizationCommonDetailWithNsi()
-                            {
-                                FullName = testString,
-                                Ogrn = testString,
-                            }
-                        }
-                    }
-                });
-            }
-            return responseTest;
         }
     }
 }

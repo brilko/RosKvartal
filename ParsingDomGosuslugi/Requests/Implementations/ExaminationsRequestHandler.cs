@@ -21,7 +21,7 @@ namespace ParsingDomGosuslugi.Requests.Implementations
             this.mapper = mapper;
         }
 
-        public async Task<ExaminationsResponseModel?> HandleRequest(HttpRequestMessage request)
+        public async Task<ExaminationResponseDto?> HandleRequest(HttpRequestMessage request)
         {
             HttpClient client = clientFactory.CreateClient();
             HttpResponseMessage responseMessage = await client.SendAsync(request);
@@ -32,8 +32,8 @@ namespace ParsingDomGosuslugi.Requests.Implementations
                 .Content
                 .ReadFromJsonAsync<ExaminationsResponseModel>()
                 ?? throw new Exception();
-            var responseDto = mapper.Map
-            return response;
+            var responseDto = mapper.Map<ExaminationResponseDto>(responseModel);
+            return responseDto;
         }
     }
 }

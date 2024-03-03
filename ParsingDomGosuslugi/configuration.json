@@ -18,6 +18,6 @@
     "Days": 0
   },
   "BatchSize": {
-    "Size": 1000
+    "Size": 10
   }
 }
