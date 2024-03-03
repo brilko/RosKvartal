@@ -1,4 +1,4 @@
-﻿namespace ParsingDomGosuslugi.Requests.ConfigurationParameters
+﻿namespace ParsingDomGosuslugi.ConfigurationParameters
 {
     internal class BatchSizeParameter
     {
