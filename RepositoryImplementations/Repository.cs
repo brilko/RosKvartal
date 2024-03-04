@@ -23,6 +23,7 @@ namespace RepositoryImplementations
         public async Task<List<T>> ReadPageAsync(SearchPage page)
         {
             return await dbSet
+                .Where(e => e.Deleted == false)
                 .Skip(page.Size * (page.Number - 1))
                 .Take(page.Size)
                 .ToListAsync();

@@ -14,7 +14,9 @@ namespace RepositoryImplementations
 
         public async Task<DateTime> GetDateOfLastUploadedExamination()
         {
-            return await examinations.MaxAsync(x => x.Date);
+            return await examinations
+                .Where(e => e.Deleted == false)
+                .MaxAsync(x => x.Date);
         }
     }
 }
