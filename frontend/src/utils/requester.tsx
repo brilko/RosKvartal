@@ -1,3 +1,4 @@
+import React from 'react';
 import tryGetEnvAsString from "./envirenmentalist";
 import axios from 'axios';
 
@@ -11,13 +12,25 @@ export class SearchPage {
     }
 }
 
-export function request(page: SearchPage) {
+export type Examination = {
+    organizationFullName: string;
+    organizationOgrn: string;
+    examObjective: string;
+    examinationResult: string;
+    examinationStatus: string;
+}
+
+export function request(page: SearchPage, setExamination: React.Dispatch<React.SetStateAction<Examination[]>>) {
     var url = constructUrlToExaminations(page);
     axios.get(url)
     .then(function(response){
-        console.log(response.data)    
-    });
-    return url;
+        var examinations = response.data as Examination[]
+        setExamination(examinations); 
+    })
+    .catch(reason => {
+        console.log(reason)
+    })
+    .finally();
 }  
 
 function constructUrlToExaminations(page: SearchPage) {
