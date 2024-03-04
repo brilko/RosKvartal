@@ -3,7 +3,6 @@ using ConfigurationParameters;
 using Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using RepositoryContracts.Intefaces;
 using RepositoryImplementations;
 using RequestsContracts.Interfaces;
@@ -11,26 +10,20 @@ using RequestsImplementations;
 using ServicesContracts.Interfaces;
 using ServicesImplementation;
 
-namespace ParsingDomGosuslugi
+namespace RosKvartal
 {
     internal static class Registrar
     {
-        public static ServiceProvider Register()
+        public static WebApplicationBuilder ResgisterServicesExtension(this WebApplicationBuilder builder)
         {
-            var configuration = ConfigurationExtension.BuildConfiguration();
-            var services = CreateServices(configuration);
-            var provider = services.BuildServiceProvider();
-            return provider;
-        }
-
-        private static IServiceCollection CreateServices(IConfigurationRoot configuration)
-        {
-            return new ServiceCollection()
+            builder
+                .AddParametersFromConfiguration()
+                .AddDataBase()
+                .Services
                 .AddBuildInServices()
                 .AddMappers()
-                .AddDataBase(configuration)
-                .AddParametersFromConfiguration(configuration)
                 .AddCustomServices();
+            return builder;
         }
 
         private static IServiceCollection AddBuildInServices(this IServiceCollection services)
@@ -52,33 +45,39 @@ namespace ParsingDomGosuslugi
                 .AddSingleton<IMapper>(new Mapper(configuration));
         }
 
-        private static IServiceCollection AddDataBase(this IServiceCollection services,
-            IConfigurationRoot configuration)
+        private static WebApplicationBuilder AddDataBase(this WebApplicationBuilder builder)
         {
-            var connectionString = configuration.GetConnectionString("examinationsDatabaseConnectionString");
-            services
+            var connectionString = builder.Configuration
+                .GetConnectionString("examinationsDatabaseConnectionString");
+            builder.Services
                 .AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(connectionString))
                 .AddScoped(typeof(IRepository<>), typeof(Repository<>))
                 .AddScoped<IExaminationRepository, ExaminationRepository>();
-            return services;
+            return builder;
         }
 
-        private static IServiceCollection AddParametersFromConfiguration(
-            this IServiceCollection services, IConfigurationRoot configuration)
+        private static WebApplicationBuilder AddParametersFromConfiguration(
+            this WebApplicationBuilder builder)
         {
-            return services
-                .AddParameter<ExaminationsUriConfigParams>("ExaminationsUriConfigParams", configuration)
-                .AddParameter<PeriodToInitialLoad>("PeriodToInitialLoad", configuration)
-                .AddParameter<PeriodBetweenLoads>("PeriodBetweenLoads", configuration)
-                .AddParameter<BatchSizeParameter>("BatchSize", configuration);
+            return builder
+                .ConfigureParameter<ExaminationsUriConfigParams>("ExaminationsUriConfigParams")
+                .ConfigureParameter<PeriodToInitialLoad>("PeriodToInitialLoad")
+                .ConfigureParameter<PeriodBetweenLoads>("PeriodBetweenLoads")
+                .ConfigureParameter<BatchSizeParameter>("BatchSize");
         }
 
-        private static IServiceCollection AddParameter<T>(this IServiceCollection services,
-            string sectionKey, IConfigurationRoot configuration) where T : class
+        private static WebApplicationBuilder ConfigureParameter<T>(this WebApplicationBuilder builder,
+            string keySection) where T : class
         {
-            
-            var parsedObject = configuration.GetFromSection<T>(sectionKey);
-            return services.AddScoped(_ => parsedObject);
+            var parsedObject = builder
+                .Configuration
+                .GetSection(keySection)
+                .Get<T>()
+                ?? throw new Exception();
+            builder
+                .Services
+                .AddScoped(_ => parsedObject);
+            return builder;
         }
 
         private static IServiceCollection AddCustomServices(this IServiceCollection services)
@@ -88,7 +87,7 @@ namespace ParsingDomGosuslugi
                 .AddScoped<IExaminationsRequestHandler, ExaminationsRequestHandler>()
                 .AddScoped<IExaminationsUploader, ExaminationsUploader>()
                 .AddScoped<IExaminationsUri, ExaminationsUri>()
-                
+
                 .AddScoped<IExaminationsUpdater, ExaminationsUpdater>();
         }
     }

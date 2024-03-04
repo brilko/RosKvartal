@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Mappers.MappingUtils;
+using RepositoryContracts.Entities;
 using RequestsContracts.Models;
 using ServicesContracts.DTOs;
 
@@ -29,6 +30,14 @@ namespace Mappers
                 .ForMember(src => src.ExaminationStatus, opt => opt.MapFrom(src =>
                     ExaminationCompletionStatusTranslator.EngToRus[src.ExaminationCompletionStatus]));
 
+            CreateMap<ExaminationDto, Examination>()
+                .ForMember(dest => dest.Deleted, opt => opt.MapFrom(_ => false))
+                .ForMember(dest => dest.ExaminationResult, opt => opt.Ignore())
+                .ForMember(dest => dest.ExaminationResultId, opt => opt.MapFrom(
+                    src => ExaminationResults.FindByName(src.ExaminationResult).Id))
+                .ForMember(dest => dest.ExaminationStatus, opt => opt.Ignore())
+                .ForMember(dest => dest.ExaminationStatusId, opt => opt.MapFrom(
+                    src => ExaminationStatuses.FindByName(src.ExaminationStatus).Id));
         }
     }
 }

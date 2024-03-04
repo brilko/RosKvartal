@@ -5,7 +5,10 @@ namespace RepositoryImplementations
 {
     public class ApplicationContext: DbContext
     {
-        public ApplicationContext(DbContextOptions<ApplicationContext> options): base(options) { }
+        public ApplicationContext(DbContextOptions<ApplicationContext> options): base(options) 
+        {
+            Database.EnsureCreated();
+        }
 
         public DbSet<Examination> Examinations { get; set; }
         public DbSet<ExaminationResult> ExaminationResultsDbSet { get; set; }
@@ -15,7 +18,7 @@ namespace RepositoryImplementations
         {
             modelBuilder
                 .Entity<ExaminationResult>()
-                .HasData(ExaminationResults.Variable);
+                .HasData(ExaminationResults.Variables);
 
             modelBuilder
                 .Entity<ExaminationStatus>()

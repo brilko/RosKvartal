@@ -19,5 +19,12 @@
             InfoOrActivity,
             Result
         };
+        public static ExaminationStatus FindByName(string name)
+        {
+            var founded = Variables
+                .Where(res => res.Name == name)
+                .FirstOrDefault();
+            return founded ?? throw new NotImplementedException();
+        }
     }
 }

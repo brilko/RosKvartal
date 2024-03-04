@@ -4,7 +4,7 @@ services:
   examinations-database:
     image:  mcr.microsoft.com/mssql/server:2019-latest
     ports: 
-      - 5434:1433
+      - 1433:1433
     volumes:
       - "examinations-databse-volume:/databases/examinations-databse-volume"
     environment:

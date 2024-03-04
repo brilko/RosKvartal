@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RosKvartal", "RosKvartal\RosKvartal.csproj", "{A289BB35-3CE9-4731-9433-6675C7F8249F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParsingDomGosuslugi", "ParsingDomGosuslugi\ParsingDomGosuslugi.csproj", "{263CFAF2-0A4D-4DD5-A395-5A5844C3D83C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleRequest", "SimpleRequest\SimpleRequest.csproj", "{56058129-EBEE-4303-94F9-CECC50E31329}"
@@ -21,19 +19,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationParameters", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{37CC2158-0C26-4670-8204-003680380D1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesContracts", "ServicesContracts\ServicesContracts.csproj", "{0EF9E393-0E9F-4483-ACD6-689F2A40244A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesContracts", "ServicesContracts\ServicesContracts.csproj", "{0EF9E393-0E9F-4483-ACD6-689F2A40244A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesImplementation", "ServicesImplementation\ServicesImplementation.csproj", "{55DE7C07-9DFC-4532-870E-50C9FCD46CCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesImplementation", "ServicesImplementation\ServicesImplementation.csproj", "{55DE7C07-9DFC-4532-870E-50C9FCD46CCA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{DA19CCE7-BE30-4B7D-B13A-5206830FFFAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryImplementations", "RepositoryImplementations\RepositoryImplementations.csproj", "{FE787D3A-16E1-4BF8-BE15-D5D4F9EE6553}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryImplementations", "RepositoryImplementations\RepositoryImplementations.csproj", "{FE787D3A-16E1-4BF8-BE15-D5D4F9EE6553}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{355D93B1-9B88-4577-B380-F5DA8BE8B67B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{355D93B1-9B88-4577-B380-F5DA8BE8B67B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mapping", "Mapping", "{D9737440-CC92-4D65-9FC6-8F540F8AA523}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MappingUtils", "MappingUtils\MappingUtils.csproj", "{4B16A4FE-0915-494E-9EAA-0972B297169E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MappingUtils", "MappingUtils\MappingUtils.csproj", "{4B16A4FE-0915-494E-9EAA-0972B297169E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{B2D88856-2E97-48E8-9F88-67C816220A48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A289BB35-3CE9-4731-9433-6675C7F8249F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A289BB35-3CE9-4731-9433-6675C7F8249F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A289BB35-3CE9-4731-9433-6675C7F8249F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A289BB35-3CE9-4731-9433-6675C7F8249F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{263CFAF2-0A4D-4DD5-A395-5A5844C3D83C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{263CFAF2-0A4D-4DD5-A395-5A5844C3D83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{263CFAF2-0A4D-4DD5-A395-5A5844C3D83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,6 +85,10 @@ Global
 		{4B16A4FE-0915-494E-9EAA-0972B297169E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B16A4FE-0915-494E-9EAA-0972B297169E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B16A4FE-0915-494E-9EAA-0972B297169E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D88856-2E97-48E8-9F88-67C816220A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D88856-2E97-48E8-9F88-67C816220A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D88856-2E97-48E8-9F88-67C816220A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D88856-2E97-48E8-9F88-67C816220A48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

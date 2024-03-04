@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ParsingDomGosuslugi;
-using RequestsContracts.Interfaces;
+using ServicesContracts.Interfaces;
 
 var provider = Registrar.Register();
-var uploader = provider.GetService<IExaminationsUploader>() ?? throw new Exception();
-var message = await uploader.UploadBatchAsync(1);
-Console.WriteLine(message);
+var updater = provider.GetService<IExaminationsUpdater>() ?? throw new Exception();
+await updater.Initialize();
 

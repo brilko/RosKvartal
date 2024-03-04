@@ -2,6 +2,7 @@
 {
     public interface IExaminationsUpdater
     {
-        void Update();  
+        Task Initialize();
+        Task Update();  
     }
 }

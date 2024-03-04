@@ -1,7 +1,11 @@
+using RosKvartal;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.ResgisterServicesExtension();
 
 var app = builder.Build();
 

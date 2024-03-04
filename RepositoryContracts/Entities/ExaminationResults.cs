@@ -20,11 +20,18 @@
             Id = Guid.Parse("1f091554-2085-4b73-a91e-92ed963aaf51"),
             Name = "Нарушений не выявлено"
         };
-        public static readonly IReadOnlyList<ExaminationResult> Variable = new List<ExaminationResult>()
+        public static readonly IReadOnlyList<ExaminationResult> Variables = new List<ExaminationResult>()
         {
             ExaminationNotEnded,
             HasOffence,
             NotOffence
         };
+        public static ExaminationResult FindByName(string name) 
+        {
+            var founded = Variables
+                .Where(res => res.Name == name)
+                .FirstOrDefault();
+            return founded ?? throw new NotImplementedException();
+        }
     }
 }

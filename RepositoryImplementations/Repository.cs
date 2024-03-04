@@ -14,7 +14,7 @@ namespace RepositoryImplementations
             dbSet = context.Set<T>();
         }
 
-        public async void AddRangeAsync(List<T> entities)
+        public async Task AddRangeAsync(List<T> entities)
         {
             await dbSet.AddRangeAsync(entities);
             await context.SaveChangesAsync();

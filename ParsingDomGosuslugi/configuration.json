@@ -12,15 +12,20 @@
     "ExaminationsUriParameterPageNumber": "$pageNumberParameterName$",
     "ExaminationsUriParametersPageSize": "$pageSizeParameterName$"
   },
-  "PeriodToLoad": {
+  "PeriodToInitialLoad": {
     "Years": 0,
     "Month": 1,
     "Days": 0
+  },
+  "PeriodBetweenLoads": {
+    "Years": 0,
+    "Month": 0,
+    "Days": 1
   },
   "BatchSize": {
     "Size": 1000
   },
   "ConnectionStrings": {
-    "examinationsDatabaseConnectionString": "Server=examinations-databse-volume;Database=Examinations;User id=sa;Password=adminadminUppercaselowercasw0123456789$*%^@!"
+    "examinationsDatabaseConnectionString": "Server=localhost,1433;Database=Examinations;User id=sa;Password=adminadminUppercaselowercasw0123456789$*%^@!;TrustServerCertificate=True"
   }
 }

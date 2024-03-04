@@ -1,6 +1,6 @@
 ﻿namespace ConfigurationParameters
 {
-    public class PeriodToLoad
+    public class PeriodBetweenLoads
     {
         public int Years { get; set; }
         public int Month { get; set; }

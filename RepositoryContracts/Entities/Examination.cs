@@ -1,12 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace RepositoryContracts.Entities
+﻿namespace RepositoryContracts.Entities
 {
     public class Examination : BaseEntity
     {
+        private string organizationFullName = "";
+        private string organizationOgrn = "";
+
         public DateTime Date { get; set; }
-        public string OrganizationFullName { get; set; } = "";
-        public string OrganizationOgrn { get; set; } = "";
+        public string OrganizationFullName 
+        { 
+            get => organizationFullName; 
+            set => organizationFullName = value ?? ""; 
+        }
+        public string OrganizationOgrn 
+        { 
+            get => organizationOgrn; 
+            set => organizationOgrn = value ?? ""; 
+        } 
         public string ExamObjective { get; set; } = "";
         public Guid ExaminationResultId { get; set; }
         public ExaminationResult? ExaminationResult { get; set; }

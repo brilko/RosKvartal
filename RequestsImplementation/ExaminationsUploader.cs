@@ -11,43 +11,24 @@ namespace RequestsImplementations
         private readonly IExaminationsRequestCreator requestCreator;
         private readonly IExaminationsRequestHandler requestHandler;
         private readonly ILogger<ExaminationsUploader> logger;
-        private readonly DateTime startToLoadPeriod;
         private readonly int batchSize;
 
         public ExaminationsUploader(
             IExaminationsUri examinationsUri,
             IExaminationsRequestCreator requestCreator,
             IExaminationsRequestHandler requestHandler,
-            PeriodToLoad periodToLoad,
             BatchSizeParameter batchSizeParameter,
             ILogger<ExaminationsUploader> logger)
         {
             this.examinationsUri = examinationsUri;
             this.requestCreator = requestCreator;
             this.requestHandler = requestHandler;
-            startToLoadPeriod = periodToLoad.GetStartDate();
             batchSize = batchSizeParameter.Size;
             this.logger = logger;
         }
 
-        //public async Task<List<ExaminationDto>> UploadAsync()
-        //{
-        //    var batchNumber = 0;
-        //    var response = new ExaminationResponseDto() 
-        //    {
-        //        Total = int.MaxValue
-        //    };
-        //    var examinations = new List<ExaminationDto>();
-        //    while (response.Total > batchNumber * batchSize) 
-        //    {
-        //        batchNumber++;
-        //        response = await UploadBatchAsync(batchNumber);
-        //        examinations.AddRange(response.Items);
-        //    }
-        //    return examinations;
-        //}
-
-        public async Task<ExaminationsResponseModel> UploadBatchAsync(int batchNumber) 
+        public async Task<ExaminationsResponseModel> UploadBatchAsync(
+            int batchNumber, DateTime startToLoadPeriod) 
         {
             while (true) 
             {
