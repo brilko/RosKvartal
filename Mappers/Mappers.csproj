@@ -12,8 +12,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MappingUtils\MappingUtils.csproj" />
+    <ProjectReference Include="..\RepositoryContracts\RepositoryContracts.csproj" />
     <ProjectReference Include="..\RequestsContracts\RequestsContracts.csproj" />
     <ProjectReference Include="..\ServicesContracts\ServicesContracts.csproj" />
+    <ProjectReference Include="..\WebApiModels\WebApiModels.csproj" />
   </ItemGroup>
 
 </Project>

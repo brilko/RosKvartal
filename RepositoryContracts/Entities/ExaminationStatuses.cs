@@ -21,10 +21,17 @@
         };
         public static ExaminationStatus FindByName(string name)
         {
-            var founded = Variables
+            return Variables
                 .Where(res => res.Name == name)
-                .FirstOrDefault();
-            return founded ?? throw new NotImplementedException();
+                .FirstOrDefault()
+                ?? throw new NotImplementedException();
+        }
+        public static ExaminationStatus FindById(Guid id)
+        {
+            return Variables
+                .Where(res => res.Id == id)
+                .FirstOrDefault()
+                ?? throw new NotImplementedException();
         }
     }
 }

@@ -3,6 +3,7 @@ using ConfigurationParameters;
 using Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using RepositoryContracts.Intefaces;
 using RepositoryImplementations;
 using RequestsContracts.Interfaces;
@@ -38,6 +39,7 @@ namespace RosKvartal
             {
                 cfg.AddProfile<ExaminationProfile>();
                 cfg.AddProfile<ExaminationResponseProfile>();
+                cfg.AddProfile<SearchPageProfile>();
             });
             configuration.AssertConfigurationIsValid();
 
@@ -88,7 +90,8 @@ namespace RosKvartal
                 .AddScoped<IExaminationsUploader, ExaminationsUploader>()
                 .AddScoped<IExaminationsUri, ExaminationsUri>()
 
-                .AddScoped<IExaminationsUpdater, ExaminationsUpdater>();
+                .AddScoped<IExaminationsUpdater, ExaminationsUpdater>()
+                .AddScoped<IExaminationPageReader, ExaminationPageReader>();
         }
     }
 }

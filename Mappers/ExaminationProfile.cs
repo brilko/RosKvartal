@@ -3,6 +3,7 @@ using Mappers.MappingUtils;
 using RepositoryContracts.Entities;
 using RequestsContracts.Models;
 using ServicesContracts.DTOs;
+using WebApiModels;
 
 namespace Mappers
 {
@@ -10,7 +11,7 @@ namespace Mappers
     {
         public ExaminationProfile()
         {
-            CreateMap<ExaminationModel, ExaminationDto>()
+            CreateMap<ExaminationRequestModel, ExaminationDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.Parse(src.Guid)))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Parse(src.Date)))
                 .ForMember(dest => dest.OrganizationFullName, opt => opt.MapFrom(
@@ -38,6 +39,14 @@ namespace Mappers
                 .ForMember(dest => dest.ExaminationStatus, opt => opt.Ignore())
                 .ForMember(dest => dest.ExaminationStatusId, opt => opt.MapFrom(
                     src => ExaminationStatuses.FindByName(src.ExaminationStatus).Id));
+
+            CreateMap<Examination, ExaminationDto>()
+                .ForMember(dest => dest.ExaminationResult, opt => opt.MapFrom(src =>
+                    ExaminationResults.FindById(src.ExaminationResultId).Name))
+                .ForMember(dest => dest.ExaminationStatus, opt => opt.MapFrom(src =>
+                    ExaminationStatuses.FindById(src.ExaminationStatusId).Name));
+
+            CreateMap<ExaminationDto, ExaminationGetPageModel>();
         }
     }
 }
