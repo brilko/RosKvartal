@@ -1,24 +1,8 @@
 import React from 'react';
 import tryGetEnvAsString from "./envirenmentalist";
 import axios from 'axios';
-
-
-export class SearchPage {
-    size: number; 
-    number: number;
-    constructor(size: number, number: number) {
-        this.size = size;
-        this.number = number;
-    }
-}
-
-export type Examination = {
-    organizationFullName: string;
-    organizationOgrn: string;
-    examObjective: string;
-    examinationResult: string;
-    examinationStatus: string;
-}
+import { Examination } from './Examination';
+import { SearchPage } from './SearchPage';
 
 export function request(page: SearchPage, setExamination: React.Dispatch<React.SetStateAction<Examination[]>>) {
     var url = constructUrlToExaminations(page);

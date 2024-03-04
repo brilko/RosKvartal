@@ -1,41 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Examination, SearchPage, request } from './utils/requester';
+import { request } from './utils/requester';
 import { tryGetEnvAsInt } from './utils/envirenmentalist';
+import { ListOfExaminations } from './components/ListOfExaminations';
+import { Examination } from './utils/Examination';
+import { SearchPage } from './utils/SearchPage';
+import { PageSlider } from './components/PageSlider';
 
 export default function App() {
   var [examinations, setExaminations] = useState<Examination[]>([]);
+  var [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
 
   useEffect(() => {
     var countElementsInPage = tryGetEnvAsInt(process.env.REACT_APP_COUNT_ELEMENT_IN_PAGE);
-    var page = new SearchPage(countElementsInPage, 1);
+    var page = new SearchPage(countElementsInPage, currentPageNumber);
     request(page, setExaminations);
-  }, []);
+  }, [currentPageNumber ]);
 
   return <>
-    {examinations.length === 0 ?
-      <p>Нет данных</p>:
-      <ul>
-        {examinations.map(examination =>
-        <li key={examination.organizationOgrn}>
-          <ExaminationBlock examination={examination}></ExaminationBlock>
-        </li>)}
-      </ul>
-      }
+    <ListOfExaminations examinations={examinations}></ListOfExaminations>
+    <PageSlider currentNumber={currentPageNumber} setNumber={setCurrentPageNumber}></PageSlider>
   </>
 }
-
-interface IExaminationBlock {
-  examination: Examination
-}
-
-function ExaminationBlock({examination}: IExaminationBlock) {
-  return <div style={{border:'2px solid blue'}}>
-    <p>Полное название организации: {examination.organizationFullName}</p>
-    <p>ОГРН организации: {examination.organizationOgrn}</p>
-    <p>Цель проверки: {examination.examObjective}</p>
-    <p>Результат проверки: {examination.examinationResult}</p>
-    <p>Статус проверки: {examination.examinationStatus}</p>
-  </div>
-}
-
