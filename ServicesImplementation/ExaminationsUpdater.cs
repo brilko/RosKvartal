@@ -12,7 +12,6 @@ namespace ServicesImplementation
     {
         private readonly IExaminationsUploader examinationsUploader;
         private readonly DateTime startDateToInitialize;
-        private readonly DateTime startDateToUpdate;
         private readonly int batchSize;
         private readonly IMapper mapper;
         private readonly IExaminationRepository examinationRepository;
@@ -20,14 +19,12 @@ namespace ServicesImplementation
         public ExaminationsUpdater(
             IExaminationsUploader examinationsUploader,
             PeriodToInitialLoad periodToInitialLoad,
-            PeriodBetweenLoads periodBetweenLoads,
             BatchSizeParameter batchSizeParameter,
             IMapper mapper,
             IExaminationRepository examinationRepository)
         {
             this.examinationsUploader = examinationsUploader;
             startDateToInitialize = periodToInitialLoad.GetStartDate();
-            startDateToUpdate = periodBetweenLoads.GetStartDate();
             batchSize = batchSizeParameter.Size;
             this.mapper = mapper;
             this.examinationRepository = examinationRepository;
@@ -35,35 +32,42 @@ namespace ServicesImplementation
 
         public async Task Initialize()
         {
-            var batchNumber = 0;
-            var totalCount = long.MaxValue;
-            while (totalCount > batchNumber * batchSize)
+            await LoadBatchesAndAct(startDateToInitialize, async examinations => 
             {
-                batchNumber++;
-                var response = await examinationsUploader
-                    .UploadBatchAsync(batchNumber, startDateToInitialize);
-                totalCount = response.Total;
-                var examinationsDto = mapper.Map<List<ExaminationDto>>(response.Items);
-                var examinations = mapper.Map<List<Examination>>(examinationsDto);
-
                 await examinationRepository.AddRangeAsync(examinations);
-            }
+            });
         }
 
-        public async Task Update() 
+        public async Task Update()
+        {
+            var lastExaminationDate = await examinationRepository.GetDateOfLastUploadedExamination();
+            var lastExaminationsIds = await examinationRepository
+                .GetExaminationsIdsWithDate(lastExaminationDate);
+            await LoadBatchesAndAct(lastExaminationDate, async examinations => 
+            {
+                var newExaminations = examinations
+                    .Where(e => !lastExaminationsIds.Contains(e.Id))
+                    .ToList();
+                await examinationRepository.AddRangeAsync(newExaminations);
+            });
+        }
+
+        private async Task LoadBatchesAndAct(
+            DateTime startDateTimeToLoad, Action<List<Examination>> actionWithBatch) 
         {
             var batchNumber = 0;
             var totalCount = long.MaxValue;
             while (totalCount > batchNumber * batchSize)
             {
                 batchNumber++;
-                var response = await examinationsUploader.UploadBatchAsync(batchNumber, startDateToUpdate);
+                var response = await examinationsUploader
+                    .UploadBatchAsync(batchNumber, startDateTimeToLoad);
                 totalCount = response.Total;
                 var examinationsDto = mapper.Map<List<ExaminationDto>>(response.Items);
-                //TODO:тут
+                var examinations = mapper.Map<List<Examination>>(examinationsDto);
+
+                actionWithBatch(examinations);
             }
         }
-
-
     }
 }

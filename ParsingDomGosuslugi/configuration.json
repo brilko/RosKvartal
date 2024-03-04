@@ -18,9 +18,10 @@
     "Days": 0
   },
   "PeriodBetweenLoads": {
-    "Years": 0,
-    "Month": 0,
-    "Days": 1
+    "Days": 1,
+    "Hours": 0,
+    "Minutes": 0,
+    "Seconds": 0
   },
   "BatchSize": {
     "Size": 1000

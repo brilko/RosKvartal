@@ -3,7 +3,7 @@
     public class ExaminationRequestModel
     {
         public string Guid { get; set; } = "";
-        public string Date { get; set; } = "";
+        public string From { get; set; } = "";
         public ExaminationSubjectModel Subject { get; set; } = new();
         public string ExamObjective { get; set; } = "";
         public bool? HasOffence { get; set; }

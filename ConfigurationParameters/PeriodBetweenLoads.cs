@@ -2,18 +2,14 @@
 {
     public class PeriodBetweenLoads
     {
-        public int Years { get; set; }
-        public int Month { get; set; }
         public int Days { get; set; }
+        public int Hours { get; set; }
+        public int Minutes { get; set; }
+        public int Seconds { get; set; }
 
-        public DateTime GetStartDate()
+        public TimeSpan ToTimeSpan()
         {
-            return DateTime
-                .Today
-                .AddYears(-1 * Years)
-                .AddMonths(-1 * Month)
-                .AddDays(-1 * Days)
-                .ToUniversalTime();
+            return new TimeSpan(Days, Hours, Minutes, Seconds);
         }
     }
 }

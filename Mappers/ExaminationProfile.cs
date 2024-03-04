@@ -13,7 +13,7 @@ namespace Mappers
         {
             CreateMap<ExaminationRequestModel, ExaminationDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.Parse(src.Guid)))
-                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Parse(src.Date)))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Parse(src.From)))
                 .ForMember(dest => dest.OrganizationFullName, opt => opt.MapFrom(
                     src => src
                         .Subject

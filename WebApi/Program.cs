@@ -33,4 +33,8 @@ app.UseCors(policyBuilder => policyBuilder
     .AllowAnyMethod()
     .AllowAnyOrigin());
 
+
+app.StartPeriodicExaminationsUpdateLoopExtension();
+
+
 app.Run();

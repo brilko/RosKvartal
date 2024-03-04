@@ -18,5 +18,14 @@ namespace RepositoryImplementations
                 .Where(e => e.Deleted == false)
                 .MaxAsync(x => x.Date);
         }
+
+        public async Task<List<Guid>> GetExaminationsIdsWithDate(DateTime date)
+        {
+            return await examinations
+                .Where(e => e.Date == date)
+                .Where(e => e.Date == date)
+                .Select(e => e.Id)
+                .ToListAsync();
+        }
     }
 }

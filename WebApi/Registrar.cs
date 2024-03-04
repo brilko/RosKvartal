@@ -93,5 +93,35 @@ namespace RosKvartal
                 .AddScoped<IExaminationsUpdater, ExaminationsUpdater>()
                 .AddScoped<IExaminationPageReader, ExaminationPageReader>();
         }
+
+        public static void StartPeriodicExaminationsUpdateLoopExtension(
+            this WebApplication app)
+        {
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    await app.StartPeriodicExaminationsUpdate();
+                }
+            });
+        }
+
+        private static async Task StartPeriodicExaminationsUpdate(this WebApplication app) 
+        {
+            var scope = app.Services.CreateScope();
+            var updater = scope
+                .ServiceProvider
+                .GetService<IExaminationsUpdater>()
+                ?? throw new Exception();
+
+            await updater.Update();
+
+            var periodBetweenUpdates = scope
+                .ServiceProvider
+                .GetService<PeriodBetweenLoads>()
+                ?? throw new Exception();
+            Thread.Sleep(periodBetweenUpdates.ToTimeSpan());
+            scope.Dispose();
+        }
     }
 }
