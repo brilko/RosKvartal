@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RepositoryContracts;
 using RepositoryContracts.Intefaces;
 using ServicesContracts.DTOs;
 using ServicesContracts.Interfaces;
@@ -16,10 +17,12 @@ namespace ServicesImplementation
             this.mapper = mapper;
         }
 
-        public Task<List<ExaminationDto>> ReadExaminationPage(SearchPageDto page)
+        public async Task<List<ExaminationDto>> ReadExaminationPage(SearchPageDto page)
         {
-            
-            throw new NotImplementedException();
+            var repositoryPage = mapper.Map<SearchPage>(page);
+            var examinationEntities = await examinationRepository.ReadPageAsync(repositoryPage);
+            var examinationDtos = mapper.Map<List<ExaminationDto>>(examinationEntities);
+            return examinationDtos;
         }
     }
 }
