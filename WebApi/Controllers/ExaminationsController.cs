@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RepositoryContracts;
 using RepositoryContracts.Entities;
 using RepositoryContracts.Intefaces;
+using ServicesContracts.DTOs;
+using ServicesContracts.Interfaces;
+using WebApi.Models;
+using WebApiModels;
 
 namespace WebApi.Controllers
 {
@@ -11,19 +16,22 @@ namespace WebApi.Controllers
     [ApiController]
     public class ExaminationsController : ControllerBase
     {
-        private readonly IExaminationRepository examinationRepository;
+        private readonly IExaminationPageReader examinationPageReader;
+        private readonly IMapper mapper;
 
-        public ExaminationsController(IExaminationRepository examinationRepository)
+        public ExaminationsController(IExaminationPageReader examinationPageReader, IMapper mapper)
         {
-            this.examinationRepository = examinationRepository;
+            this.examinationPageReader = examinationPageReader;
+            this.mapper = mapper;
         }
 
         [HttpGet("page/{pageSize}/{pageNumber}")]
         public async Task<IActionResult> GetExaminationsList(int pageSize, int pageNumber) 
         {
-            var page = new SearchPage(pageNumber, pageSize);
-            var examinations = await examinationRepository.ReadPageAsync(page);
-            return Ok(examinations);
+            var page = new SearchPageDto(pageNumber, pageSize);
+            var examinationDtos = await examinationPageReader.ReadExaminationPage(page);
+            var examinationModels = mapper.Map<List<ExaminationGetPageModel>>(examinationDtos);
+            return Ok(examinationModels);
         }
     }
 }
