@@ -1,9 +1,9 @@
-﻿namespace RepositoryContracts
+﻿namespace WebApi.Models
 {
-    public class SearchPage
+    public class SearchPageModel
     {
-        protected SearchPage() { }
-        public SearchPage(int number, int size) 
+        protected SearchPageModel() { }
+        public SearchPageModel(int number, int size)
         {
             if (number <= 0 || size <= 0)
                 throw new ArgumentOutOfRangeException();
