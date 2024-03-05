@@ -1,73 +1,47 @@
-﻿using AutoMapper;
-using ConfigurationParameters;
-using RepositoryContracts.Entities;
+﻿using ConfigurationParameters;
 using RepositoryContracts.Intefaces;
-using RequestsContracts.Interfaces;
-using ServicesContracts.DTOs;
 using ServicesContracts.Interfaces;
 
 namespace ServicesImplementation
 {
     public class ExaminationsUpdater : IExaminationsUpdater
     {
-        private readonly IExaminationsUploader examinationsUploader;
-        private readonly DateTime startDateToInitialize;
-        private readonly int batchSize;
-        private readonly IMapper mapper;
+        private readonly ILoadBatchesAndActAdapter loadBatchesAndActAdapter;
         private readonly IExaminationRepository examinationRepository;
+        private readonly IUpdateDateRepository updateDateRepository;
+        private readonly LoadPeriodForUpdate loadPeriodForUpdate;
 
         public ExaminationsUpdater(
-            IExaminationsUploader examinationsUploader,
-            PeriodToInitialLoad periodToInitialLoad,
-            BatchSizeParameter batchSizeParameter,
-            IMapper mapper,
-            IExaminationRepository examinationRepository)
+            IExaminationRepository examinationRepository,
+            ILoadBatchesAndActAdapter loadBatchesAndActAdapter,
+            IUpdateDateRepository updateDateRepository,
+            LoadPeriodForUpdate loadPeriodForUpdate)
         {
-            this.examinationsUploader = examinationsUploader;
-            startDateToInitialize = periodToInitialLoad.GetStartDate();
-            batchSize = batchSizeParameter.Size;
-            this.mapper = mapper;
             this.examinationRepository = examinationRepository;
-        }
-
-        public async Task Initialize()
-        {
-            await LoadBatchesAndAct(startDateToInitialize, async examinations => 
-            {
-                await examinationRepository.AddRangeAsync(examinations);
-            });
+            this.loadBatchesAndActAdapter = loadBatchesAndActAdapter;
+            this.updateDateRepository = updateDateRepository;
+            this.loadPeriodForUpdate = loadPeriodForUpdate;
         }
 
         public async Task Update()
         {
-            var lastExaminationDate = await examinationRepository.GetDateOfLastUploadedExamination();
-            var lastExaminationsIds = await examinationRepository
-                .GetExaminationsIdsWithDate(lastExaminationDate);
-            await LoadBatchesAndAct(lastExaminationDate, async examinations => 
+            //Скачивание происходит относительно полседней даты обновления
+            var lastUpdate = await updateDateRepository.GetDateOfLastUpdate();
+            await updateDateRepository.AddDateNowAsync();
+            var dateTimeToLoad = loadPeriodForUpdate.GetStartDate(lastUpdate);
+            //Так как дата проверки моет быть запланирована на будущее,
+            //то в инициализированных проверках могут быть те проверки, которые выдаёт гис жкх,
+            //при новых запросах. Причём гис жкх может выдавать те проверки, начало даты проверки которых,
+            //стоит раншьше запрошенной даты.
+            var existExaminations = await examinationRepository
+                .GetIdsStartNotPreviousAsync(dateTimeToLoad.AddDays(-1));
+            await loadBatchesAndActAdapter.LoadBatchesAndAct(dateTimeToLoad, async examinations => 
             {
-                var newExaminations = examinations
-                    .Where(e => !lastExaminationsIds.Contains(e.Id))
+                var examinationsToAdd = examinations
+                    .Where(e => !existExaminations.Contains(e.Id))
                     .ToList();
-                await examinationRepository.AddRangeAsync(newExaminations);
+                await examinationRepository.AddRangeAsync(examinationsToAdd);
             });
-        }
-
-        private async Task LoadBatchesAndAct(
-            DateTime startDateTimeToLoad, Action<List<Examination>> actionWithBatch) 
-        {
-            var batchNumber = 0;
-            var totalCount = long.MaxValue;
-            while (totalCount > batchNumber * batchSize)
-            {
-                batchNumber++;
-                var response = await examinationsUploader
-                    .UploadBatchAsync(batchNumber, startDateTimeToLoad);
-                totalCount = response.Total;
-                var examinationsDto = mapper.Map<List<ExaminationDto>>(response.Items);
-                var examinations = mapper.Map<List<Examination>>(examinationsDto);
-
-                actionWithBatch(examinations);
-            }
         }
     }
 }

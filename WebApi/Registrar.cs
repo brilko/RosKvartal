@@ -54,8 +54,9 @@ namespace RosKvartal
             builder.Services
                 .AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(connectionString))
                 .AddScoped(typeof(IRepository<>), typeof(Repository<>))
-                .AddScoped<IExaminationRepository, ExaminationRepository>();
-            return builder;
+                .AddScoped<IExaminationRepository, ExaminationRepository>()
+                .AddScoped<IUpdateDateRepository, UpdateDateRepository>();
+                return builder;
         }
 
         private static WebApplicationBuilder AddParametersFromConfiguration(
@@ -63,8 +64,9 @@ namespace RosKvartal
         {
             return builder
                 .ConfigureParameter<ExaminationsUriConfigParams>("ExaminationsUriConfigParams")
-                .ConfigureParameter<PeriodToInitialLoad>("PeriodToInitialLoad")
-                .ConfigureParameter<PeriodBetweenLoads>("PeriodBetweenLoads")
+                .ConfigureParameter<LoadPeriodForInitial>("LoadPeriodForInitial")
+                .ConfigureParameter<LoadPeriodForUpdate>("LoadPeriodForUpdate")
+                .ConfigureParameter<PeriodBetweenLoads>("PeriodBetweenUpdates")
                 .ConfigureParameter<BatchSizeParameter>("BatchSize");
         }
 
@@ -89,9 +91,11 @@ namespace RosKvartal
                 .AddScoped<IExaminationsRequestHandler, ExaminationsRequestHandler>()
                 .AddScoped<IExaminationsUploader, ExaminationsUploader>()
                 .AddScoped<IExaminationsUri, ExaminationsUri>()
+                .AddScoped<IExaminationsBatchLoader, ExaminationsBatchLoader>()
 
                 .AddScoped<IExaminationsUpdater, ExaminationsUpdater>()
-                .AddScoped<IExaminationPageReader, ExaminationPageReader>();
+                .AddScoped<IExaminationPageReader, ExaminationPageReader>()
+                .AddScoped<ILoadBatchesAndActAdapter, LoadBatchesAndActAdapter>();
         }
 
         public static void StartPeriodicExaminationsUpdateLoopExtension(
@@ -106,7 +110,8 @@ namespace RosKvartal
             });
         }
 
-        private static async Task StartPeriodicExaminationsUpdate(this WebApplication app) 
+        private static async Task StartPeriodicExaminationsUpdate(
+            this WebApplication app) 
         {
             var scope = app.Services.CreateScope();
             var updater = scope
@@ -120,8 +125,8 @@ namespace RosKvartal
                 .ServiceProvider
                 .GetService<PeriodBetweenLoads>()
                 ?? throw new Exception();
-            Thread.Sleep(periodBetweenUpdates.ToTimeSpan());
             scope.Dispose();
+            Thread.Sleep(periodBetweenUpdates.ToTimeSpan());
         }
     }
 }

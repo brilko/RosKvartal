@@ -13,6 +13,7 @@ namespace RepositoryImplementations
         public DbSet<Examination> Examinations { get; set; }
         public DbSet<ExaminationResult> ExaminationResultsDbSet { get; set; }
         public DbSet<ExaminationStatus> ExaminationStatusesDbSet { get; set; }
+        public DbSet<UpdateDate> UpdateDatesDbSet { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

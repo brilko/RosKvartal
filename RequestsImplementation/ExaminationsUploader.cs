@@ -10,21 +10,18 @@ namespace RequestsImplementations
         private readonly IExaminationsUri examinationsUri;
         private readonly IExaminationsRequestCreator requestCreator;
         private readonly IExaminationsRequestHandler requestHandler;
-        private readonly ILogger<ExaminationsUploader> logger;
         private readonly int batchSize;
 
         public ExaminationsUploader(
             IExaminationsUri examinationsUri,
             IExaminationsRequestCreator requestCreator,
             IExaminationsRequestHandler requestHandler,
-            BatchSizeParameter batchSizeParameter,
-            ILogger<ExaminationsUploader> logger)
+            BatchSizeParameter batchSizeParameter)
         {
             this.examinationsUri = examinationsUri;
             this.requestCreator = requestCreator;
             this.requestHandler = requestHandler;
             batchSize = batchSizeParameter.Size;
-            this.logger = logger;
         }
 
         public async Task<ExaminationsResponseModel> UploadBatchAsync(
@@ -37,7 +34,7 @@ namespace RequestsImplementations
                 var response = await requestHandler.HandleRequest(request);
                 if (response != null)
                     return response;
-                logger.LogWarning("Получить данные от сервера не удалось. Ещё одна попытка получить данные. ExaminationsUploader.");
+                Console.WriteLine("Получить данные от сервера не удалось. Ещё одна попытка получить данные. ExaminationsUploader.");
             }
         }
     }

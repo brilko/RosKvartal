@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConfigurationParameters\ConfigurationParameters.csproj" />
+    <ProjectReference Include="..\ServicesContracts\ServicesContracts.csproj" />
   </ItemGroup>
 
 </Project>

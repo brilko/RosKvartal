@@ -2,7 +2,6 @@
 {
     public interface IExaminationsUpdater
     {
-        Task Initialize();
         Task Update();  
     }
 }

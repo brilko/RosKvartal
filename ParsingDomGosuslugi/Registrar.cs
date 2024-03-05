@@ -4,6 +4,7 @@ using Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using RepositoryContracts.Intefaces;
 using RepositoryImplementations;
 using RequestsContracts.Interfaces;
@@ -59,7 +60,8 @@ namespace ParsingDomGosuslugi
             services
                 .AddDbContext<ApplicationContext>(opt => opt.UseSqlServer(connectionString))
                 .AddScoped(typeof(IRepository<>), typeof(Repository<>))
-                .AddScoped<IExaminationRepository, ExaminationRepository>();
+                .AddScoped<IExaminationRepository, ExaminationRepository>()
+                .AddScoped<IUpdateDateRepository, UpdateDateRepository>();
             return services;
         }
 
@@ -68,8 +70,7 @@ namespace ParsingDomGosuslugi
         {
             return services
                 .AddParameter<ExaminationsUriConfigParams>("ExaminationsUriConfigParams", configuration)
-                .AddParameter<PeriodToInitialLoad>("PeriodToInitialLoad", configuration)
-                .AddParameter<PeriodBetweenLoads>("PeriodBetweenLoads", configuration)
+                .AddParameter<LoadPeriodForInitial>("PeriodToInitialLoad", configuration)
                 .AddParameter<BatchSizeParameter>("BatchSize", configuration);
         }
 
@@ -88,8 +89,10 @@ namespace ParsingDomGosuslugi
                 .AddScoped<IExaminationsRequestHandler, ExaminationsRequestHandler>()
                 .AddScoped<IExaminationsUploader, ExaminationsUploader>()
                 .AddScoped<IExaminationsUri, ExaminationsUri>()
+                .AddScoped<IExaminationsBatchLoader, ExaminationsBatchLoader>()
                 
-                .AddScoped<IExaminationsUpdater, ExaminationsUpdater>();
+                .AddScoped<IExaminationsInitializer, ExaminationsInitializer>()
+                .AddScoped<ILoadBatchesAndActAdapter, LoadBatchesAndActAdapter>();
         }
     }
 }

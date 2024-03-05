@@ -12,18 +12,11 @@ namespace RepositoryImplementations
             examinations = context.Set<Examination>();
         }
 
-        public async Task<DateTime> GetDateOfLastUploadedExamination()
+        public async Task<List<Guid>> GetIdsStartNotPreviousAsync(DateTime date)
         {
             return await examinations
                 .Where(e => e.Deleted == false)
-                .MaxAsync(x => x.Date);
-        }
-
-        public async Task<List<Guid>> GetExaminationsIdsWithDate(DateTime date)
-        {
-            return await examinations
-                .Where(e => e.Date == date)
-                .Where(e => e.Date == date)
+                .Where(e => e.Start >= date)
                 .Select(e => e.Id)
                 .ToListAsync();
         }

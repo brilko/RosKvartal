@@ -5,7 +5,7 @@
         private string organizationFullName = "";
         private string organizationOgrn = "";
 
-        public DateTime Date { get; set; }
+        public DateTime Start { get; set; }
         public string OrganizationFullName 
         { 
             get => organizationFullName; 

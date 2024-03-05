@@ -14,6 +14,14 @@ namespace RepositoryImplementations
             dbSet = context.Set<T>();
         }
 
+        public async Task<T> AddAsync(T entityToAdd)
+        {
+            var entry = await dbSet.AddAsync(entityToAdd);
+            var newEntity = entry.Entity;
+            await context.SaveChangesAsync();
+            return newEntity;
+        }
+
         public async Task AddRangeAsync(List<T> entities)
         {
             await dbSet.AddRangeAsync(entities);
